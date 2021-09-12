@@ -1,0 +1,217 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Characters.png" type="Texture" id=1]
+[ext_resource path="res://Player.gd" type="Script" id=2]
+[ext_resource path="res://flatDark/flatDark20.png" type="Texture" id=3]
+[ext_resource path="res://Joystick.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Base_font.tres" type="DynamicFont" id=5]
+[ext_resource path="res://flatDark/flatDark11.png" type="Texture" id=6]
+[ext_resource path="res://flatDark/flatDark48.png" type="Texture" id=7]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 40.0
+height = 33.0
+
+[sub_resource type="Animation" id=2]
+resource_name = "Reloading"
+length = 1.8
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("CanvasLayer/Reload/Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "Stop_reload"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("CanvasLayer/Reload/Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+
+[node name="Player" type="KinematicBody2D" groups=[
+"Net",
+"Player",
+]]
+script = ExtResource( 2 )
+joystick_one_path = NodePath("CanvasLayer/Joysticks/Joystick")
+joystick_two_path = NodePath("CanvasLayer/Joysticks/Joystick2")
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.75, 0.75 )
+texture = ExtResource( 1 )
+offset = Vector2( 16, -6 )
+region_enabled = true
+region_rect = Rect2( 768, 2247, 256, 253 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Network_tick_rate" type="Timer" parent="."]
+wait_time = 0.03
+autostart = true
+
+[node name="Reload_timer" type="Timer" parent="."]
+wait_time = 0.15
+one_shot = true
+
+[node name="Hit_timer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="Reloading" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Shoot_point" type="Position2D" parent="."]
+position = Vector2( 98, 30 )
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource( 1 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Reload" type="Control" parent="CanvasLayer"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="CanvasLayer/Reload"]
+position = Vector2( 1422.49, 110.097 )
+scale = Vector2( 4.8, 1.2 )
+normal = ExtResource( 6 )
+action = "reload"
+
+[node name="Reload" type="Label" parent="CanvasLayer/Reload"]
+margin_left = 1429.0
+margin_top = 117.0
+margin_right = 1602.0
+margin_bottom = 167.0
+custom_fonts/font = ExtResource( 5 )
+text = "Reload"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="CanvasLayer/Reload"]
+position = Vector2( 1626.44, 139.184 )
+texture = ExtResource( 3 )
+hframes = 18
+
+[node name="Change_guns" type="Control" parent="CanvasLayer"]
+margin_top = 75.0
+margin_right = 40.0
+margin_bottom = 115.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="CanvasLayer/Change_guns"]
+position = Vector2( 1277.83, 110.097 )
+scale = Vector2( 7.81379, 1.2 )
+normal = ExtResource( 6 )
+action = "change_guns"
+
+[node name="Reload" type="Label" parent="CanvasLayer/Change_guns"]
+margin_left = 1284.0
+margin_top = 117.0
+margin_right = 1606.0
+margin_bottom = 167.0
+custom_fonts/font = ExtResource( 5 )
+text = "Change Guns"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="CanvasLayer/Change_guns"]
+position = Vector2( 1626.44, 139.184 )
+texture = ExtResource( 3 )
+hframes = 18
+
+[node name="Joysticks" type="Control" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 0.350342
+margin_bottom = 0.350342
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Joystick" parent="CanvasLayer/Joysticks" instance=ExtResource( 4 )]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 50.0
+margin_top = -350.0
+margin_right = 338.0
+margin_bottom = -50.0
+radius = 80.0
+
+[node name="Joystick2" parent="CanvasLayer/Joysticks" instance=ExtResource( 4 )]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -338.0
+margin_top = -350.0
+margin_right = -50.0
+margin_bottom = -50.0
+radius = 80.0
+
+[node name="Bullets" type="Control" parent="CanvasLayer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/Bullets"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -125.0
+margin_top = -100.0
+margin_right = 125.0
+margin_bottom = -50.0
+custom_fonts/font = ExtResource( 5 )
+
+[node name="Shoot" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2( 1710.91, 55.9385 )
+scale = Vector2( 2, 2 )
+normal = ExtResource( 7 )
+action = "click"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Reloading = SubResource( 2 )
+anims/Stop_reload = SubResource( 3 )
+
+[connection signal="timeout" from="Network_tick_rate" to="." method="_on_Network_tick_rate_timeout"]
+[connection signal="timeout" from="Reload_timer" to="." method="_on_Reload_timer_timeout"]
+[connection signal="timeout" from="Hit_timer" to="." method="_on_Hit_timer_timeout"]
+[connection signal="timeout" from="Reloading" to="." method="_on_Reloading_timeout"]
+[connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
